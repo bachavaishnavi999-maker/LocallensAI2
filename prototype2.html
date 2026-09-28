@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LocalLens AI — Advanced Tourism Prototype</title>
+<style>
+:root{--green:#1f6b4c;--dark:#123d2d;--mint:#e8f3eb;--cream:#f7f8f2;--gold:#e7ad4f;--text:#23362c;--muted:#68776e;--line:#dbe6dc;--white:#fff;--danger:#a64d42}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:13px max(3vw,16px);display:flex;align-items:center;justify-content:space-between;gap:15px}.logo{font-weight:900;color:var(--green);font-size:1.2rem}.nav{display:flex;gap:7px;flex-wrap:wrap}.nav button{border:0;background:transparent;padding:8px 10px;border-radius:9px;color:var(--muted);font-weight:700;cursor:pointer}.nav button.active,.nav button:hover{background:var(--mint);color:var(--green)}
+main{max-width:1180px;margin:auto;padding:22px 16px 60px}.hero{background:linear-gradient(120deg,var(--dark),#36875f);color:#fff;border-radius:25px;padding:34px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-60px;top:-75px;background:rgba(255,255,255,.08)}.hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.02;margin:0 0 12px}.hero p{max-width:760px;line-height:1.65;color:#e2f0e6;margin:0}.hero .pill{display:inline-block;background:rgba(255,255,255,.13);padding:7px 10px;border-radius:20px;margin-bottom:15px;font-size:.8rem;font-weight:800}
+.section{display:none}.section.active{display:block}.grid{display:grid;grid-template-columns:310px 1fr;gap:17px;margin-top:18px}.panel{background:var(--white);border:1px solid var(--line);border-radius:17px;padding:19px;margin-bottom:16px}.panel h2{margin:0 0 7px;font-size:1.15rem}.hint,.muted{color:var(--muted);font-size:.85rem;line-height:1.5}label{display:block;font-size:.82rem;font-weight:800;margin:13px 0 6px}input,select{width:100%;padding:11px;border:1px solid #ccdacc;border-radius:10px;background:#fff;color:var(--text);font:inherit}.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{padding:8px 10px;border-radius:22px;border:1px solid #d4e0d5;background:#fff;cursor:pointer;font-size:.8rem}.chip.active{background:var(--mint);border-color:var(--green);color:var(--green);font-weight:800}.primary{border:0;background:var(--green);color:#fff;padding:12px 15px;border-radius:10px;font-weight:850;cursor:pointer}.wide{width:100%;margin-top:15px}.secondary{border:1px solid #cbd9ce;background:#fff;color:var(--green);padding:9px 12px;border-radius:9px;font-weight:800;cursor:pointer}.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;display:flex;flex-direction:column}.visual{height:90px;background:linear-gradient(135deg,#e7f1e6,#f7eee0);display:flex;justify-content:space-between;align-items:center;padding:14px}.emoji{font-size:2.3rem}.tag{font-size:.72rem;font-weight:850;background:#ffffffdc;border-radius:20px;padding:6px 9px}.body{padding:14px;display:flex;flex-direction:column;flex:1}.body h3{margin:0 0 7px;font-size:1rem}.body p{font-size:.84rem;color:var(--muted);line-height:1.48}.meta{font-size:.76rem;color:var(--muted);line-height:1.55}.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}.actions a{text-decoration:none}.empty{text-align:center;padding:25px;color:var(--muted);background:#f3f7f2;border-radius:12px}.statbar{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}.stat{background:var(--mint);border-radius:12px;padding:11px}.stat b{display:block;font-size:1.1rem;color:var(--green)}.stat span{font-size:.72rem;color:var(--muted)}.route{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}.route li{background:#f3f7f2;border-radius:10px;padding:11px;display:flex;justify-content:space-between;gap:10px}.small{font-size:.74rem}.ai{background:linear-gradient(135deg,#f0f7f1,#fff8e9);border:1px solid #dce7dc}.ai-title{color:var(--green);font-weight:900}.resultbox{background:#fff;border:1px dashed #b8cbbd;border-radius:12px;padding:15px;line-height:1.6}.timeline{border-left:3px solid var(--green);padding-left:17px;display:grid;gap:14px}.timeitem{position:relative}.timeitem:before{content:"";position:absolute;left:-26px;top:4px;width:9px;height:9px;background:var(--green);border-radius:50%}.verified{color:var(--green);font-weight:800}.warning{color:#8a6430}.footer-note{font-size:.75rem;color:var(--muted);line-height:1.6;margin-top:15px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.statbar{grid-template-columns:repeat(2,1fr)}.nav{display:none}}
+</style>
+</head>
+<body>
+<header><div class="logo">📍 LocalLens AI</div><nav class="nav">
+<button class="active" data-tab="discover">Discover</button><button data-tab="surprise">✨ Surprise Me</button><button data-tab="itinerary">🗓️ My Trip</button><button data-tab="community">🤝 Community</button>
+</nav></header>
+<main>
+<section class="hero">
+<span class="pill">AI IN TOURISM • IDEATHON PROTOTYPE</span>
+<h1>Don't just visit a city.<br>Experience it.</h1>
+<p>LocalLens combines personalized AI planning with local-first discoveries — cafés, neighborhood stories, hidden corners, food, culture and practical local context — so a tourist gets a trip that feels personal rather than generic.</p>
+</section>
+
+<section id="discover" class="section active">
+<div class="grid">
+<aside>
+<div class="panel"><h2>Build your traveler profile</h2><p class="hint">The demo uses your choices to rank the recommendations.</p>
+<label>City</label><input id="citySearch" placeholder="Search an Indian city…"><select id="city"></select>
+<label>Budget per person</label><input id="budget" type="number" value="1500" min="0">
+<label>Available time</label><select id="time"><option>3 hours</option><option selected>6 hours</option><option>Full day</option><option>2 days</option></select>
+<label>Traveling with</label><select id="group"><option>Solo</option><option>Partner</option><option>Friends</option><option>Family</option></select>
+<label>What are you in the mood for?</label>
+<div class="chips" id="chips">
+<button class="chip active" data-tag="Culture">🏛️ Culture</button><button class="chip active" data-tag="Food">🍲 Food</button><button class="chip" data-tag="Cafe">☕ Cafés</button><button class="chip" data-tag="Hidden Gem">🧭 Hidden gems</button><button class="chip" data-tag="Nature">🌿 Peaceful</button><button class="chip" data-tag="Art">🎨 Art</button><button class="chip" data-tag="Markets">🛍️ Markets</button><button class="chip" data-tag="Beach">🏖️ Beach</button><button class="chip" data-tag="Spiritual">🪷 Spiritual</button>
+</div>
+<button class="primary wide" id="generate">✨ Create my LocalLens</button>
+</div>
+<div class="panel ai"><div class="ai-title">🤖 AI local planner</div><p class="muted">Try: “I have 4 hours, ₹800, I want something peaceful and different.”</p><button class="secondary" onclick="demoPrompt()">Use example request</button></div>
+</aside>
+<section>
+<div class="panel"><div class="topline"><div><h2 id="title">Your local discovery feed</h2><div class="muted" id="subtitle">Pick a city and preferences.</div></div><select id="sort" style="width:auto"><option value="match">Best match</option><option value="cost">Lowest spend</option><option value="local">Local-first</option></select></div>
+<div class="statbar"><div class="stat"><b id="count">0</b><span>matching places</span></div><div class="stat"><b id="budgetStat">₹0</b><span>your budget</span></div><div class="stat"><b id="localStat">0</b><span>local-first finds</span></div><div class="stat"><b id="timeStat">6h</b><span>available</span></div></div></div>
+<div class="cards" id="cards"></div>
+
+<div class="panel" style="margin-top:16px">
+<div class="topline"><div><h2>🍽️ Famous food & local price guide</h2>
+<div class="muted">What the city is known for — with an indicative local price range.</div></div><span class="tag">FoodLens</span></div>
+<div class="cards" id="foodCards" style="margin-top:13px"></div>
+<div class="footer-note">Prices are illustrative prototype ranges, not live quotes. A production version would update ranges using verified local data and recent user reports.</div>
+</div>
+<div class="panel" style="margin-top:16px"><div class="topline"><div><h2>🧭 LocalLens Discoveries</h2><div class="muted">The layer designed to go beyond generic search.</div></div><span class="tag">Community + AI concept</span></div><div class="cards" id="discoveries" style="margin-top:13px"></div></div>
+</section>
+</div>
+</section>
+
+<section id="surprise" class="section">
+<div class="panel"><h2>✨ Surprise Me</h2><p class="muted">Give LocalLens a constraint, not a destination checklist. The prototype creates a themed mini-experience.</p>
+<div class="grid" style="grid-template-columns:1fr 1fr">
+<div><label>City</label><select id="surpriseCity"></select><label>Budget</label><input id="surpriseBudget" type="number" value="800"><label>Time</label><select id="surpriseTime"><option>3 hours</option><option selected>4 hours</option><option>6 hours</option></select><label>Mood</label><select id="surpriseMood"><option>Peaceful & green</option><option>Foodie & local</option><option>Artsy & creative</option><option>Low-budget adventure</option><option>Heritage & stories</option></select><button class="primary wide" onclick="surprise()">Generate a surprise experience ✨</button></div>
+<div class="resultbox" id="surpriseResult"><b>Example:</b><br>“4 hours + ₹800 + peaceful & different” → Local café + quiet neighborhood walk + one cultural stop, arranged to avoid unnecessary backtracking.</div>
+</div></div>
+</section>
+
+<section id="itinerary" class="section">
+<div class="panel"><div class="topline"><div><h2>🗓️ My LocalLens itinerary</h2><div class="muted">Your saved places become one simple plan.</div></div><button class="secondary" onclick="clearTrip()">Clear</button></div>
+<div id="tripStats" class="statbar"></div><div id="tripTimeline" class="timeline"><div class="empty">Add places from Discover.</div></div></div>
+<div class="panel ai"><h2>🤖 AI itinerary logic</h2><p class="muted">In the real product, AI would consider opening hours, travel time, crowd patterns, weather, accessibility, budget, and user preferences before ordering the stops.</p></div>
+</section>
+
+<section id="community" class="section">
+<div class="panel"><h2>🤝 The community layer</h2><p class="muted">This is the feature that turns LocalLens from another map/search interface into a local discovery platform.</p>
+<div class="cards">
+<div class="card"><div class="body"><h3>🧑‍🤝‍🧑 Resident tips</h3><p>Locals can recommend a tiny café, a neighborhood walk, a craft studio, or a seasonal experience.</p></div></div>
+<div class="card"><div class="body"><h3>🛡️ Trust & freshness</h3><p>Every tip can show contributor type, last-updated date, community reports, and moderator verification.</p></div></div>
+<div class="card"><div class="body"><h3>💬 Local context</h3><p>Instead of only a pin, visitors see what to try, when to go, what to respect, and what makes it special.</p></div></div>
+<div class="card"><div class="body"><h3>🌱 Local economy</h3><p>Discovery can give smaller local businesses and community-run experiences visibility.</p></div></div>
+</div></div>
+<div class="panel"><h2>Submit a local tip</h2><p class="muted">Prototype only — this stays on your screen and is not uploaded.</p>
+<label>Place / experience</label><input id="tipName" placeholder="e.g. tiny book café"><label>What makes it special?</label><input id="tipWhy" placeholder="Tell another traveler why they should discover it"><label>Type</label><select id="tipType"><option>Café</option><option>Hidden gem</option><option>Local food</option><option>Neighborhood walk</option><option>Art / craft</option><option>Nature</option></select><button class="primary wide" onclick="addTip()">＋ Add my local tip</button>
+<ul class="route" id="tips"><li class="empty">No submitted tips yet.</li></ul></div>
+</section>
+</main>
+
+<script>
+
+const famousFoods={
+"Bengaluru, Karnataka":[["Masala Dosa","South Indian","₹60–₹180"],["Bisi Bele Bath","South Indian","₹80–₹180"],["Mangaluru Buns","Snack","₹50–₹120"],["Filter Coffee","Drink","₹30–₹100"]],
+"Jaipur, Rajasthan":[["Dal Baati Churma","Rajasthani","₹180–₹450"],["Pyaaz Kachori","Snack","₹30–₹100"],["Ghewar","Sweet","₹80–₹250"],["Lassi","Drink","₹50–₹150"]],
+"Mumbai, Maharashtra":[["Vada Pav","Street food","₹20–₹60"],["Pav Bhaji","Street food","₹100–₹220"],["Misal Pav","Maharashtrian","₹80–₹180"],["Bombay Sandwich","Snack","₹70–₹180"]],
+"Chennai, Tamil Nadu":[["Idli & Sambar","South Indian","₹50–₹140"],["Masala Dosa","South Indian","₹70–₹180"],["Pongal","South Indian","₹60–₹150"],["Filter Coffee","Drink","₹30–₹90"]],
+"Hyderabad, Telangana":[["Hyderabadi Biryani","Hyderabadi","₹180–₹450"],["Haleem","Hyderabadi","₹150–₹350"],["Osmania Biscuit","Bakery","₹50–₹150"],["Irani Chai","Drink","₹30–₹80"]],
+"Kolkata, West Bengal":[["Kolkata Biryani","Bengali","₹180–₹400"],["Kathi Roll","Street food","₹100–₹250"],["Mishti Doi","Sweet","₹60–₹160"],["Rasgulla","Sweet","₹40–₹120"]],
+"Kochi, Kerala":[["Appam & Stew","Kerala","₹120–₹300"],["Kerala Parotta","Kerala","₹80–₹220"],["Karimeen","Seafood","₹250–₹600"],["Banana Chips","Snack","₹60–₹180"]],
+"Delhi, India":[["Chole Bhature","North Indian","₹100–₹250"],["Butter Chicken","North Indian","₹250–₹600"],["Aloo Tikki","Street food","₹50–₹130"],["Paratha","Street food","₹60–₹180"]],
+"Udaipur, Rajasthan":[["Dal Baati Churma","Rajasthani","₹180–₹450"],["Gatte Ki Sabzi","Rajasthani","₹150–₹350"],["Kachori","Snack","₹30–₹100"],["Kulhad Chai","Drink","₹30–₹80"]],
+"Amritsar, Punjab":[["Amritsari Kulcha","Punjabi","₹100–₹250"],["Chole","Punjabi","₹80–₹200"],["Amritsari Fish","Punjabi","₹250–₹550"],["Lassi","Drink","₹60–₹160"]],
+"Shillong, Meghalaya":[["Jadoh","Khasi","₹150–₹350"],["Dohneiihong","Khasi","₹180–₹400"],["Tungrymbai","Khasi","₹150–₹350"],["Pukhlein","Snack","₹50–₹120"]]
+};
+
+const places={
+"Bengaluru, Karnataka":[
+["Lalbagh Botanical Garden","Nature","🌳","Mavalli",100,90,"Historic botanical garden for a green break.",1],
+["Bangalore Palace","History","🏰","Vasanth Nagar",300,75,"Landmark palace with a different architectural story.",0],
+["Indian Coffee House","Cafe","☕","Church Street / MG Road",200,60,"Classic, simple coffee stop with old-school atmosphere.",2],
+["VV Puram Food Street","Food","🥘","Vishweshwarapura",350,90,"Compact evening food-lane experience.",2],
+["Kaikondrahalli Lake","Hidden Gem","🌿","Sarjapur Road",0,75,"Neighborhood lake walk for a quieter break.",2],
+["Basavanagudi neighborhood walk","Hidden Gem","🏘️","Basavanagudi",150,90,"Temple streets, local food and everyday Bengaluru.",2],
+["National Gallery of Modern Art","Art","🎨","Vasanth Nagar",250,75,"Modern and contemporary Indian art.",1],
+["KR Market flower lanes","Markets","🌼","Kalasi Palya",100,50,"Early-day market atmosphere and flower trade.",2]
+],
+"Jaipur, Rajasthan":[
+["Hawa Mahal","History","🏯","Badi Choupad",200,60,"Iconic old-city landmark.",0],["Amber Fort","History","🏰","Amer",500,120,"Hilltop fort complex.",0],["Tapri Central","Cafe","☕","C-Scheme",350,60,"Popular café stop for a relaxed city break.",1],["Panna Meena ka Kund","Hidden Gem","💧","Amer",50,45,"Historic stepwell away from the main fort route.",2],["Johari Bazaar","Markets","🛍️","Pink City",250,75,"Jewelry and craft shopping lanes.",1],["Bapu Bazaar side lanes","Hidden Gem","🧵","Pink City",200,75,"Small textile and craft shops.",2],["Masala Chowk","Food","🍛","Ram Niwas Garden",400,60,"Food court with regional snacks.",1]
+],
+"Mumbai, Maharashtra":[
+["Gateway of India","History","🕌","Apollo Bandar, Colaba",0,45,"Harborfront landmark.",0],["Prithvi Café","Cafe","☕","Juhu",350,75,"Theatre-linked café atmosphere.",2],["Khotachiwadi","Hidden Gem","🏘️","Girgaon",100,60,"Lived-in heritage neighborhood; respect residents.",2],["Banganga Tank","Hidden Gem","🪷","Walkeshwar",0,50,"Historic water tank and old neighborhood setting.",2],["Chhatrapati Shivaji Maharaj Vastu Sangrahalaya","Art","🏛️","Fort",200,90,"Major museum.",1],["Chor Bazaar","Markets","🛍️","Mutton Street",250,75,"Historic market district.",1],["Marine Drive","Nature","🌊","Netaji Subhash Chandra Bose Road",0,60,"Seafront promenade.",1]
+],
+"Chennai, Tamil Nadu":[
+["Marina Beach","Beach","🏖️","Kamarajar Salai",0,60,"Long urban beach.",0],["Kapaleeshwarar Temple","Spiritual","🪷","Mylapore",0,60,"Historic temple district.",1],["Amethyst","Cafe","☕","Royapettah",450,75,"Garden-style café setting.",2],["Mylapore heritage lanes","Hidden Gem","🏘️","Mylapore",100,75,"Temple-tank streets and everyday neighborhood life.",2],["Government Museum Chennai","Art","🏛️","Egmore",250,90,"Art and archaeology collections.",1],["T. Nagar market","Markets","🛍️","T. Nagar",250,90,"Busy shopping district.",1]
+],
+"Hyderabad, Telangana":[
+["Charminar","History","🕌","Old City",100,60,"Historic monument.",0],["Roastery Coffee House","Cafe","☕","Banjara Hills",400,75,"Café stop for a slower neighborhood outing.",2],["Paigah Tombs","Hidden Gem","🏛️","Santosh Nagar",100,75,"Ornate historic complex.",2],["Moazzam Jahi Market","Hidden Gem","🍉","Nampally",200,75,"Historic market with local-food possibilities.",2],["Salar Jung Museum","Art","🏛️","Darulshifa",300,100,"Museum with broad collections.",1],["Laad Bazaar","Markets","🛍️","Near Charminar",250,60,"Traditional shopping street.",1]
+],
+"Kolkata, West Bengal":[
+["Victoria Memorial","History","🏛️","Queens Way",200,90,"Monument and museum.",0],["Indian Coffee House","Cafe","☕","College Street",200,75,"Old-school coffee-house atmosphere.",2],["Kumartuli artisan lanes","Hidden Gem","🎨","Kumartuli",100,75,"Traditional clay-image-making neighborhood.",2],["New Market","Markets","🛍️","Dharmatala",200,75,"Historic market complex.",1],["Prinsep Ghat","Nature","🌅","Strand Road",0,50,"Riverside stop.",1]
+],
+"Kochi, Kerala":[
+["Fort Kochi Chinese Fishing Nets","Culture","🎣","Fort Kochi",0,45,"Waterfront landmark.",0],["Kashi Art Café","Cafe","☕","Fort Kochi",400,75,"Art-focused café stop.",2],["Kumbalangi village experience","Hidden Gem","🌴","Kumbalangi",300,120,"Backwater-side village experience; prefer local hosts.",2],["Mattancherry Palace","History","🏰","Mattancherry",100,60,"Historic palace.",1],["Jew Town heritage lanes","Hidden Gem","🏘️","Mattancherry",150,75,"Antique shops and heritage streets.",2],["Kerala Folklore Museum","Art","🎭","Thevara",200,90,"Regional art and cultural objects.",1]
+],
+"Delhi, India":[
+["India Gate","Culture","🏛️","Kartavya Path",0,45,"Central landmark.",0],["Triveni Terrace Café","Cafe","☕","Mandi House",350,75,"Café in a cultural-center setting.",2],["Mehrauli Archaeological Park","Hidden Gem","🏛️","Mehrauli",50,90,"Cluster of historic structures and paths.",2],["Sunder Nursery","Nature","🌿","Nizamuddin",100,90,"Heritage garden and quiet green space.",1],["Dilli Haat INA","Markets","🧵","INA",250,90,"Craft and food stalls.",1],["Red Fort","History","🏰","Old Delhi",500,120,"Historic fort complex.",0]
+],
+"Udaipur, Rajasthan":[
+["City Palace","History","🏰","City Palace Road",500,120,"Palace complex overlooking Lake Pichola.",0],["Jheel’s Ginger Coffee Bar & Bakery","Cafe","☕","Gangaur Ghat",350,60,"Small café stop near the lakefront.",2],["Ahar Cenotaphs","Hidden Gem","🏛️","Ahar",100,60,"Quieter heritage stop.",2],["Bagore Ki Haveli","Culture","🏛️","Gangaur Ghat",200,75,"Historic haveli and cultural displays.",1],["Hathi Pol Bazaar","Markets","🛍️","Hathi Pol",200,75,"Local art and handicrafts.",1],["Fateh Sagar Lake","Nature","🌊","Fateh Sagar",100,60,"Lakefront views.",1]
+],
+"Amritsar, Punjab":[
+["Golden Temple","Spiritual","🪷","Golden Temple Road",0,90,"Sacred Sikh shrine; follow visitor etiquette.",0],["Partition Museum","History","🏛️","Town Hall",250,75,"Museum documenting Partition stories.",1],["Hall Bazaar","Markets","🛍️","Hall Bazaar",250,75,"Historic shopping street.",1],["Punjabi food walk","Food","🍛","Lawrence Road area",400,75,"Regional dishes at local eateries.",2],["Jallianwala Bagh","History","🕊️","Near Golden Temple",0,45,"Public memorial garden.",0]
+],
+"Shillong, Meghalaya":[
+["Ward’s Lake","Nature","🌿","Central Shillong",50,60,"Garden lake.",1],["Café Shillong","Cafe","☕","Laitumkhrah",350,75,"Local café stop.",2],["Mawphlang Sacred Grove","Hidden Gem","🌳","Mawphlang",100,120,"Community-protected forest; use local guidance.",2],["Laitlum Canyon","Hidden Gem","⛰️","Smit area",100,120,"Scenic outing beyond central Shillong.",2],["Don Bosco Museum","Art","🏛️","Mawlai",200,90,"Northeast India cultural collections.",1],["Police Bazaar","Markets","🛍️","Police Bazaar",250,75,"Central shopping and food district.",1]
+]
+};
+const cities=Object.keys(places).sort();
+const city=document.getElementById("city"), surpriseCity=document.getElementById("surpriseCity");
+cities.forEach(c=>{city.add(new Option(c,c));surpriseCity.add(new Option(c,c))});
+let active=new Set(["Culture","Food"]),trip=[],tips=[];
+const chips=[...document.querySelectorAll(".chip")];
+chips.forEach(b=>b.onclick=()=>{b.classList.toggle("active");b.classList.contains("active")?active.add(b.dataset.tag):active.delete(b.dataset.tag);render()});
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));document.getElementById(b.dataset.tab).classList.add("active");if(b.dataset.tab==="itinerary")renderTrip()});
+document.getElementById("city").onchange=render;document.getElementById("budget").oninput=render;document.getElementById("sort").onchange=render;document.getElementById("generate").onclick=render;
+document.getElementById("citySearch").oninput=e=>{let q=e.target.value.toLowerCase();[...city.options].forEach(o=>o.hidden=!o.text.toLowerCase().includes(q));let f=[...city.options].find(o=>!o.hidden);if(f)city.value=f.value;render()};
+function money(n){return "₹"+Math.round(n).toLocaleString("en-IN")}
+function getItems(){let b=+document.getElementById("budget").value||0;let arr=(places[city.value]||[]).map((p,i)=>({id:city.value+i,name:p[0],tag:p[1],emoji:p[2],area:p[3],cost:p[4],mins:p[5],desc:p[6],local:p[7],score:(active.has(p[1])?3:0)+(p[7]*1)+(p[4]<=b?1:0)}));return arr.filter(p=>p.cost<=b||b===0)}
+function render(){let arr=getItems();let sort=document.getElementById("sort").value;if(sort==="cost")arr.sort((a,b)=>a.cost-b.cost);else if(sort==="local")arr.sort((a,b)=>b.local-a.local||b.score-a.score);else arr.sort((a,b)=>b.score-a.score);document.getElementById("title").textContent="Your local discovery feed · "+city.value;document.getElementById("subtitle").textContent=`Personalized for ${document.getElementById("group").value.toLowerCase()} · ${document.getElementById("time").value} · ${active.size} interests`;document.getElementById("count").textContent=arr.length;document.getElementById("budgetStat").textContent=money(+document.getElementById("budget").value||0);document.getElementById("localStat").textContent=arr.filter(p=>p.local>=2).length;document.getElementById("timeStat").textContent=document.getElementById("time").value.replace("hours","h").replace("Full day","1 day").replace("2 days","2d");document.getElementById("cards").innerHTML=arr.length?arr.map(card).join(""):'<div class="empty">Try a higher budget or different interests.</div>';renderDiscoveries();renderFood()}
+function card(p){let added=trip.some(x=>x.id===p.id);return `<article class="card"><div class="visual"><span class="emoji">${p.emoji}</span><span class="tag">${p.tag}${p.local>=2?" · local-first":""}</span></div><div class="body"><h3>${p.name}</h3><div class="meta">📍 ${p.area}<br>⏱ ${p.mins} min suggested · 💰 ${money(p.cost)} sample spend · ${p.tag==="Cafe"?"☕ Café price guide":"🎟️ Experience price guide"}</div><p>${p.desc}</p><p class="small"><span class="verified">✦ LocalLens context:</span> Ask locally, respect the neighborhood, and verify current hours before visiting.</p><div class="actions"><a class="secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+" "+p.area+" "+city.value)}">📍 Maps</a><button class="secondary" onclick="toggleTrip('${p.id}')">${added?"✓ Added":"＋ Add"}</button></div></div></article>`}
+
+function renderFood(){
+  const foods=famousFoods[city.value]||[];
+  document.getElementById("foodCards").innerHTML=foods.length?foods.map(f=>`
+  <article class="card"><div class="visual"><span class="emoji">🍽️</span><span class="tag">${f[1]}</span></div>
+  <div class="body"><h3>${f[0]}</h3><div class="meta">💰 Typical range: <b>${f[2]}</b></div>
+  <p>Popular city-specific food to look for when building your LocalLens experience.</p>
+  <div class="actions"><a class="secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f[0]+" "+city.value)}">📍 Find nearby</a></div></div></article>`).join(""):'<div class="empty">Food data coming soon for this city.</div>';
+}
+function renderDiscoveries(){let all=getItems().filter(p=>p.local>=2);document.getElementById("discoveries").innerHTML=all.length?all.slice(0,4).map(card).join(""):'<div class="empty">No local-first cards match the current filters.</div>'}
+function toggleTrip(id){let all=getItems();let p=all.find(x=>x.id===id)||Object.values(places).flat().map((p,i)=>({id:city.value+i,name:p[0],tag:p[1],emoji:p[2],area:p[3],cost:p[4],mins:p[5],desc:p[6],local:p[7]})).find(x=>x.id===id);if(!p)return;trip.some(x=>x.id===id)?trip=trip.filter(x=>x.id!==id):trip.push(p);render();renderTrip()}
+function renderTrip(){let total=trip.reduce((s,p)=>s+p.cost,0),mins=trip.reduce((s,p)=>s+p.mins,0);document.getElementById("tripStats").innerHTML=`<div class="stat"><b>${trip.length}</b><span>stops</span></div><div class="stat"><b>${money(total)}</b><span>sample spend</span></div><div class="stat"><b>${(mins/60).toFixed(1)}h</b><span>visit time</span></div><div class="stat"><b>${trip.filter(p=>p.local>=2).length}</b><span>local-first</span></div>`;document.getElementById("tripTimeline").innerHTML=trip.length?trip.map((p,i)=>`<div class="timeitem"><b>${i+1}. ${p.emoji} ${p.name}</b><br><span class="muted">📍 ${p.area} · ${p.mins} min · ${money(p.cost)}</span><br><button class="secondary small" onclick="toggleTrip('${p.id}')">Remove</button></div>`).join(""):'<div class="empty">Add places from Discover.</div>'}
+function clearTrip(){trip=[];render();renderTrip()}
+function surprise(){let c=surpriseCity.value,b=+document.getElementById("surpriseBudget").value||800,m=document.getElementById("surpriseMood").value;let arr=(places[c]||[]).filter(p=>p[4]<=b).sort((a,b)=>b[7]-a[7]);let chosen=arr.slice(0,3);if(m.includes("Food"))chosen=arr.filter(p=>p[1]==="Food"||p[1]==="Cafe"||p[7]>=2).slice(0,3);if(m.includes("Artsy"))chosen=arr.filter(p=>p[1]==="Art"||p[1]==="Cafe"||p[7]>=2).slice(0,3);if(m.includes("Peaceful"))chosen=arr.filter(p=>p[1]==="Nature"||p[1]==="Hidden Gem"||p[7]>=2).slice(0,3);if(!chosen.length)chosen=arr.slice(0,3);document.getElementById("surpriseResult").innerHTML=`<b>🤖 LocalLens suggests:</b><br><span class="muted">${c} · ${m} · ${money(b)}</span><div class="route">${chosen.map((p,i)=>`<div><b>${i+1}. ${p[2]} ${p[0]}</b><br><span class="muted">📍 ${p[3]} · ${money(p[4])} · ${p[5]} min</span></div>`).join("")}</div><p class="muted">Why this mix? It favors lesser-known or mood-matching experiences and keeps the sample spend within your limit. A production version would also optimize live travel time and opening hours.</p>`}
+function demoPrompt(){document.getElementById("surpriseBudget").value=800;document.getElementById("surpriseTime").value="4 hours";document.getElementById("surpriseMood").value="Peaceful & green";document.querySelector('[data-tab="surprise"]').click();surprise()}
+function addTip(){let n=document.getElementById("tipName").value.trim(),w=document.getElementById("tipWhy").value.trim(),t=document.getElementById("tipType").value;if(!n||!w)return;tips.push({n,w,t,city:city.value});document.getElementById("tipName").value="";document.getElementById("tipWhy").value="";document.getElementById("tips").innerHTML=tips.map(x=>`<li><span><b>💡 ${x.n}</b><br><span class="muted">${x.t} · ${x.city}<br>${x.w}</span></span><span class="small warning">Pending verification</span></li>`).join("")}
+document.getElementById("time").onchange=render;document.getElementById("group").onchange=render;render();
+</script>
+</body>
+</html>
